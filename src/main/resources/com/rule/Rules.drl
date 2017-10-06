@@ -1,0 +1,18 @@
+package com.rule
+
+import appli
+
+rule "Application Rejected"
+	when 
+		productObject: appli(score <= 500)
+	then
+		productObject.setStatus("Application Rejected");
+		productObject.setSucc(false);
+	end
+rule "Application Accepted"
+	when 
+		productObject: appli(score > 650)
+	then
+		productObject.setStatus("Application Approved!");
+		productObject.setSucc(true);
+	end

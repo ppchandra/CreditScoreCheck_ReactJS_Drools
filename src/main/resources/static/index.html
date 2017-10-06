@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <title>Credit Score Check</title>
+</head>
+<body class="col-xs-2">
+	<br/><br/><br/>
+	<div class="align-center" id='start'></div>
+	
+ 	<script src="https://fb.me/react-15.0.1.js"></script>
+    <script src="https://fb.me/react-dom-15.0.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+ 	  <script type="text/babel">
+	
+	var CreditCheck = React.createClass({
+		checkValue: function() {
+			var inputValue = $('#inputValue').val();		
+			console.log('value is');
+			var self = this;
+    $.ajax({
+      url: "/drools?value="+inputValue,
+      crossDomain: true,
+      dataType: 'json',
+      contentType: "application/json",
+		
+    }).then(function (data) {
+    	self.setState({resp: data});
+			$('#status').html(data.status);
+		if(data.succ == false)  {
+			$('#status').addClass('alert alert-success');
+		}
+
+    });
+		},
+		getInitialState() {
+    	return {resp: []};
+		},
+		render: function() {
+	    return (
+				<div className="form-group">
+					<label for="inputValue">Enter Credit Score: </label>
+					<input className="form-control" id="inputValue" type="text" placeholder="CreditScore"/><br />
+					<span id="status" /><br/><br />
+					<button id="button" className="btn btn-md btn-primary btn-Success" onClick={this.checkValue}>Submit</button>
+				</div>
+		);
+	  	}
+		});
+
+var Element = React.createClass({
+	  loadCreditCheckFromServer: function () {
+	  },
+	  getInitialState: function () {
+	    return {CreditStatus: []};
+	  },
+	  render() {
+	    return ( <CreditCheck /> );
+	  }
+	});
+
+
+ReactDOM.render(<Element />, document.getElementById('start') );
+
+	</script>
+</body>
+</html>
